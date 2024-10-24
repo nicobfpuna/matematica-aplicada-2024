@@ -60,7 +60,6 @@ def penn_to_wn(tag):
         return 'r'  # adverbio
     else:
         return None
-
 def get_sentiment_scores_sentiwordnet(text):
     """
     Calcula los puntajes de sentimiento usando SentiWordNet
@@ -82,6 +81,12 @@ def get_sentiment_scores_sentiwordnet(text):
         # Promedio de scores para todos los synsets
         pos = sum(s.pos_score() for s in synsets) / len(synsets)
         neg = sum(s.neg_score() for s in synsets) / len(synsets)
+        
+        # Normalizar los puntajes
+        total = pos + neg
+        if total > 0:
+            pos /= total
+            neg /= total
         
         pos_scores.append(pos)
         neg_scores.append(neg)
