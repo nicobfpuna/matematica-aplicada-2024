@@ -23,9 +23,10 @@ def preprocess_text(text):
     4. Eliminar hashtags
     5. Eliminar puntuación
     6. Eliminar números
-    7. Tokenización
-    8. Eliminar stopwords
-    9. Lematización
+    7. Eliminar palabras de una sola letra
+    8. Tokenización
+    9. Eliminar stopwords
+    10. Lematización
     """
     
     text = text.lower()
@@ -41,6 +42,9 @@ def preprocess_text(text):
     
     
     text = re.sub(r'\d+', '', text)
+    
+    
+    text = re.sub(r"\b\w\b", "", text)
     
     
     tokens = word_tokenize(text)
