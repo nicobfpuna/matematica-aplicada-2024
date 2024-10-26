@@ -8,6 +8,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import re
 import string
 
+import src.fuzzy_rules as fuzzy_rules
+
 # Descargar recursos necesarios de NLTK
 nltk.download("punkt")
 nltk.download("punkt_tab")
@@ -28,9 +30,10 @@ def preprocess_text(text):
     5. Eliminar puntuación
     6. Eliminar números
     7. Eliminar palabras de una sola letra
-    8. Tokenización
-    9. Eliminar stopwords
-    10. Lematización
+    8. Eliminar palabras extendidas (3 o más letras repetidas)
+    9. Tokenización
+    10. Eliminar stopwords
+    11. Lematización
     """
 
     text = text.lower()
@@ -43,8 +46,9 @@ def preprocess_text(text):
 
     text = re.sub(r"\d+", "", text)
     
-    
     text = re.sub(r"\b\w\b", "", text)
+    
+    text = re.sub(r"(.)\1{2,}", r"\1", text)
 
     tokens = word_tokenize(text)
 
@@ -217,3 +221,11 @@ if __name__ == "__main__":
     output_file = "resultados_fuzificados.csv"
     final_df.to_csv(output_file, index=False)
     print(f"Resultados guardados en {output_file}")
+    
+    #Genera una salida entre 0 y 10, donde valores cerca de cero es negatico
+    # Valores cercanos a 5 son neutrales y valores cercanos a 10 son positivos
+    print("Generando reglas difusas...")
+    fuzzy_df = final_df.copy()
+    fuzzy_df = fuzzy_rules.apply_fuzzy_rules(fuzzy_df)
+    fuzzy_df.to_csv("data_fuzzy.csv", index=False)
+    
