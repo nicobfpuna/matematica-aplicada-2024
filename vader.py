@@ -172,16 +172,21 @@ def process_fuzzified_data(df):
     return df
 
 if __name__ == "__main__":
+    ## Creación de dataset procesado
     input_file = "./data/test_data.csv"
     output_file = "tweets_processed.csv"
+    ## Procesamiento de dataset con VADER
     df_processed = process_dataset(input_file, output_file)
+    ## Fuzzificación de los resultados de VADER
     fuzzifier = VaderFuzzifier()
     fuzzy_results = fuzzifier.process_vader_scores(df_processed)
     final_df = pd.concat([df_processed, fuzzy_results], axis=1)
     output_file = "resultados_fuzificados.csv"
     final_df.to_csv(output_file, index=False)
     print(f"Resultados guardados en {output_file}")
+    
     fuzzified_df = pd.read_csv("resultados_fuzificados.csv")
+    ## Defuzzificación de los resultados
     final_df = process_fuzzified_data(fuzzified_df)
     final_df['total_processing_time'] = final_df['fuzzification_time'] + final_df['defuzzification_time']
     output_file = "resultados_defuzzificados.csv"
