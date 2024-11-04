@@ -219,8 +219,8 @@ def print_statistics(df):
 if __name__ == "__main__":
     # (Modulo 1) Procesamiento de los datos - preprocesamiento de los textos
     # (Modulo 2) Lexicon de sentimientos - calcula los scores de sentimiento pos y neg
-    df = process_dataset(INPUT_FILE)
-
+    df = process_dataset(INPUT_FILE_TEST)
+    print('Guardando resultados...')
     # (Modulo 3) Fuzzificación de los resultados
     fuzzifier = VaderFuzzifier()
     fuzzy_results = fuzzifier.process_vader_scores(df)
@@ -238,4 +238,3 @@ if __name__ == "__main__":
 
     # Guardar resultados
     df.to_csv(OUTPUT_FILE, index=False)
-    
