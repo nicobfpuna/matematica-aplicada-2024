@@ -238,3 +238,4 @@ if __name__ == "__main__":
 
     # Guardar resultados
     df.to_csv(OUTPUT_FILE, index=False)
+    
